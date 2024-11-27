@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輸入賓果號碼</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 10px;
+        }
+
+        .response-message {
+            margin-top: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+            .response-message.success {
+                color: #28a745;
+            }
+
+            .response-message.error {
+                color: #dc3545;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>輸入賓果號碼</h1>
+        <form id="bingo-form">
+            <input type="number" id="bingo-number" class="form-control" placeholder="請輸入號碼" required>
+            <button type="submit" class="btn btn-primary">提交號碼</button>
+        </form>
+        <button id="clear-button" class="btn btn-danger mt-3">開始新遊戲</button>
+        <p id="response-message" class="response-message"></p>
+    </div>
+
+    <script>
+        document.getElementById('bingo-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const numberInput = document.getElementById('bingo-number');
+            const responseMessage = document.getElementById('response-message');
+            const number = parseInt(numberInput.value);
+
+            fetch('/api/add_number', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ number })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        responseMessage.textContent = data.message;
+                        responseMessage.className = 'response-message success';
+                    } else {
+                        responseMessage.textContent = `錯誤：${data.message}`;
+                        responseMessage.className = 'response-message error';
+                    }
+                    numberInput.value = ''; 
+                })
+                .catch(error => {
+                    responseMessage.textContent = '提交失敗，請稍後再試。';
+                    responseMessage.className = 'response-message error';
+                    console.error('Error:', error);
+                });
+        });
+
+        document.getElementById('clear-button').addEventListener('click', function () {
+            const responseMessage = document.getElementById('response-message');
+
+          
+            const userConfirmed = confirm('會清除所有賓果號碼歐!無法復原歐!');
+            if (!userConfirmed) {
+                return; 
+            }
+
+            fetch('/api/clear_numbers', {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        responseMessage.textContent = data.message || '所有號碼已清除！';
+                        responseMessage.className = 'response-message success';
+
+                        const bingoList = document.getElementById('bingo-list');
+                        if (bingoList) bingoList.innerHTML = '';
+                    } else {
+                        responseMessage.textContent = `錯誤：${data.message}`;
+                        responseMessage.className = 'response-message error';
+                    }
+                })
+                .catch(error => {
+                    responseMessage.textContent = '清除失敗，請稍後再試。';
+                    responseMessage.className = 'response-message error';
+                    console.error('Error:', error);
+                });
+        });
+
+    </script>
+</body>
+</html>

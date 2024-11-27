@@ -1,0 +1,133 @@
+body, h1, form, input, label, a {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  color: #e6e6e6;
+}
+
+body {
+  background-color: #222222;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444444;
+  border-radius: 4px;
+  background-color: #333333;
+  color: #e6e6e6;
+}
+
+input[type="submit"] {
+  background-color: #008000;
+  cursor: pointer;
+}
+
+a {
+  display: inline-block;
+  padding: 10px;
+  background-color: #0055aa;
+  color: #e6e6e6;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #003377;
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+  
+  input[type="text"],
+  input[type="submit"],
+  a {
+    width: 100%;
+  }
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #444444;
+}
+
+table th {
+  background-color: #333333;
+  color: #e6e6e6;
+  font-weight: bold;
+}
+
+table td {
+  background-color: #222222;
+  color: #e6e6e6;
+}
+
+table tr:nth-child(even) td {
+  background-color: #333333;
+}
+
+table tr:hover td {
+  background-color: #555555;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: #aa0000 !important;
+  text-decoration: none;
+  border: 1px solid #444444;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 10px;
+  color: #e6e6e6;
+  box-sizing: border-box;
+}
+.delete:hover {
+  background-color: #770000 !important;
+}
+.delete:active {
+  background-color: #550000 !important;
+}
